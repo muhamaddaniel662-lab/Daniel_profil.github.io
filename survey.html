@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Survey Kepuasan Pelanggan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0e1117;
+      --surface:   #161b27;
+      --card:      #1c2333;
+      --border:    #2a3348;
+      --accent:    #e8a045;
+      --accent2:   #5bc4bf;
+      --text:      #e8eaf0;
+      --muted:     #7a85a0;
+      --success:   #4ade80;
+      --error:     #f87171;
+      --radius:    14px;
+      --shadow:    0 8px 32px rgba(0,0,0,.4);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem 4rem;
+      background-image:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(232,160,69,.12), transparent),
+        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(91,196,191,.08), transparent);
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      animation: fadeDown .7s ease both;
+    }
+    header .label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(232,160,69,.35);
+      border-radius: 100px;
+      padding: .3rem .9rem;
+      margin-bottom: 1rem;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.9rem, 5vw, 3rem);
+      line-height: 1.15;
+      background: linear-gradient(135deg, #e8d5a3, #e8a045 50%, #5bc4bf);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p {
+      color: var(--muted);
+      margin-top: .6rem;
+      font-size: .95rem;
+      font-weight: 300;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      max-width: 720px;
+      margin: 0 auto 2rem;
+      animation: fadeDown .8s .1s ease both;
+    }
+    .progress-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 100px;
+      transition: width .4s ease;
+    }
+    .progress-label {
+      font-size: .75rem;
+      color: var(--muted);
+      margin-top: .4rem;
+      text-align: right;
+    }
+
+    /* ── FORM CARD ── */
+    form {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 2rem;
+      box-shadow: var(--shadow);
+      animation: fadeUp .6s ease both;
+    }
+    .section-card:nth-child(1) { animation-delay: .15s; }
+    .section-card:nth-child(2) { animation-delay: .25s; }
+    .section-card:nth-child(3) { animation-delay: .35s; }
+    .section-card:nth-child(4) { animation-delay: .45s; }
+    .section-card:nth-child(5) { animation-delay: .55s; }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 1.4rem;
+      padding-bottom: .8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title .icon {
+      width: 30px; height: 30px;
+      background: rgba(232,160,69,.12);
+      border-radius: 8px;
+      display: grid; place-items: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* ── GRID ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .full    { grid-column: 1 / -1; }
+    @media (max-width: 560px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── FIELD ── */
+    .field { display: flex; flex-direction: column; gap: .4rem; }
+    label {
+      font-size: .8rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    label span.req { color: var(--accent); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      padding: .7rem 1rem;
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+      width: 100%;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    input[type="date"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232,160,69,.15);
+    }
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a85a0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      cursor: pointer;
+    }
+    textarea { resize: vertical; min-height: 110px; }
+
+    /* ── CHECKBOX & RADIO ── */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+      gap: .7rem;
+    }
+    .option-item {
+      position: relative;
+    }
+    .option-item input { position: absolute; opacity: 0; pointer-events: none; }
+    .option-item label {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: .65rem 1rem;
+      cursor: pointer;
+      font-size: .88rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: 0;
+      text-transform: none;
+      transition: border-color .2s, background .2s;
+    }
+    .option-item label::before {
+      content: '';
+      width: 18px; height: 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 5px;
+      background: var(--bg);
+      flex-shrink: 0;
+      transition: all .2s;
+    }
+    .option-item input[type="radio"] + label::before { border-radius: 50%; }
+    .option-item input:checked + label {
+      border-color: var(--accent);
+      background: rgba(232,160,69,.07);
+    }
+    .option-item input:checked + label::before {
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(232,160,69,.2);
+    }
+    .option-item input[type="checkbox"]:checked + label::before {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' fill='none'%3E%3Cpath d='M1 4l3 3 5-6' stroke='%230e1117' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* ── SATISFACTION STARS ── */
+    .satisfaction-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .7rem;
+    }
+    .satisfaction-grid .option-item label {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .3rem;
+      text-align: center;
+      min-width: 100px;
+      padding: .9rem .7rem;
+    }
+    .satisfaction-grid .option-item label::before { display: none; }
+    .sat-emoji { font-size: 1.8rem; }
+    .sat-text  { font-size: .78rem; color: var(--muted); }
+    .option-item input[type="radio"]:checked + label .sat-text { color: var(--accent); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      animation: fadeUp .6s .6s ease both;
+    }
+    button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      padding: .75rem 2rem;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: .02em;
+    }
+    .btn-reset {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-reset:hover { border-color: var(--error); color: var(--error); }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--accent), #d4883a);
+      color: #0e1117;
+      font-weight: 600;
+      box-shadow: 0 4px 18px rgba(232,160,69,.3);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,160,69,.4); }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      background: var(--card);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 1rem 1.4rem;
+      border-radius: 12px;
+      font-size: .9rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,.5);
+      display: none;
+      align-items: center;
+      gap: .7rem;
+      z-index: 999;
+      animation: slideIn .3s ease;
+    }
+    #toast.show { display: flex; }
+
+    /* ── KEYFRAMES ── */
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-18px); } to { opacity:1; transform:none; } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(18px);  } to { opacity:1; transform:none; } }
+    @keyframes slideIn  { from { opacity:0; transform:translateX(30px);  } to { opacity:1; transform:none; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="label"> Ini Formulir Resmi</div>
+  <h1>Survey Kepuasan Pelanggan</h1>
+  <p>Bantu saya meningkatkan layanan dengan mengisi survei di bawah</p>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0% terisi</div>
+</div>
+
+<form id="surveyForm" novalidate>
+
+  <!-- ① DATA PELANGGAN -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="icon">👤</span> Data Pelanggan
+    </div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Nama Lengkap <span class="req">*</span></label>
+        <input type="text" name="nama" placeholder="Contoh: Gatot Kaca" required />
+      </div>
+      <div class="field">
+        <label>Nomor Telepon <span class="req">*</span></label>
+        <input type="tel" name="telepon" placeholder="+62 812 3456 7890" required />
+      </div>
+      <div class="field">
+        <label>Alamat Email <span class="req">*</span></label>
+        <input type="email" name="email" placeholder="email@contoh.com" required />
+      </div>
+      <div class="field">
+        <label>Tanggal Lahir</label>
+        <input type="date" name="tgl_lahir" />
+      </div>
+      <div class="field full">
+        <label>Alamat Lengkap <span class="req">*</span></label>
+        <input type="text" name="alamat" placeholder="Jl. Contoh No. 1, Kota, Provinsi" required />
+      </div>
+    </div>
+  </div>
+
+  <!-- ② KATEGORI PELANGGAN -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="icon">🏷️</span> Kategori Pelanggan
+    </div>
+    <div class="field">
+      <label>Pilih Kategori Pelanggan <span class="req">*</span></label>
+      <select name="kategori" required>
+        <option value="" disabled selected>— Pilih kategori —</option>
+        <option value="individu">Pelanggan Baru</option>
+        <option value="umkm">Pelaku UMKM</option>
+        <option value="korporat">Budak Korporat</option>
+        <option value="pemerintah">Instansi Pemerintah</option>
+        <option value="distributor">Distributor / Reseller</option>
+        <option value="lainnya">Lainnya</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ③ PILIHAN PRODUK -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="icon">📦</span> Produk yang Digunakan
+    </div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Pilih satu atau lebih produk yang pernah Anda gunakan</p>
+    <div class="options-grid">
+      <div class="option-item">
+        <input type="checkbox" id="p1" name="produk" value="Produk A" />
+        <label for="p1">📱 Produk Elektronik</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="p2" name="produk" value="Produk B" />
+        <label for="p2">🖥️ Perangkat Lunak</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="p3" name="produk" value="Produk C" />
+        <label for="p3">🛠️ Layanan Teknis</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="p4" name="produk" value="Produk D" />
+        <label for="p4">🚚 Layanan Pengiriman</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="p5" name="produk" value="Produk E" />
+        <label for="p5">🎓 Pelatihan & Edukasi</label>
+      </div>
+      <div class="option-item">
+        <input type="checkbox" id="p6" name="produk" value="Produk F" />
+        <label for="p6">🛒 Produk Konsumer</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ KEPUASAN -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="icon">⭐</span> Tingkat Kepuasan
+    </div>
+    <p style="font-size:.85rem;color:var(--muted);margin-bottom:1rem;">Seberapa puas Anda dengan produk/layanan kami secara keseluruhan?</p>
+    <div class="satisfaction-grid">
+      <div class="option-item">
+        <input type="radio" id="s1" name="kepuasan" value="sangat_tidak_puas" required />
+        <label for="s1">
+          <span class="sat-emoji">😤</span>
+          <span class="sat-text">Sangat Tidak Puas</span>
+        </label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="s2" name="kepuasan" value="tidak_puas" />
+        <label for="s2">
+          <span class="sat-emoji">😞</span>
+          <span class="sat-text">Tidak Puas</span>
+        </label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="s3" name="kepuasan" value="cukup_puas" />
+        <label for="s3">
+          <span class="sat-emoji">😐</span>
+          <span class="sat-text">Cukup Puas</span>
+        </label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="s4" name="kepuasan" value="puas" />
+        <label for="s4">
+          <span class="sat-emoji">😊</span>
+          <span class="sat-text">Puas</span>
+        </label>
+      </div>
+      <div class="option-item">
+        <input type="radio" id="s5" name="kepuasan" value="sangat_puas" />
+        <label for="s5">
+          <span class="sat-emoji">🤩</span>
+          <span class="sat-text">Sangat Puas</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⑤ KOMENTAR -->
+  <div class="section-card">
+    <div class="section-title">
+      <span class="icon">💬</span> Komentar & Saran
+    </div>
+    <div class="field">
+      <label>Tuliskan masukan Anda</label>
+      <textarea name="komentar" placeholder="Ceritakan pengalaman Anda, saran perbaikan, atau hal lain yang ingin Anda sampaikan..."></textarea>
+    </div>
+  </div>
+
+  <!-- TOMBOL -->
+  <div class="btn-row">
+    <button type="reset" class="btn-reset" id="btnReset">↺ Reset Form</button>
+    <button type="submit" class="btn-submit">Kirim Survey →</button>
+  </div>
+
+</form>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast">
+  <span style="font-size:1.3rem">✅</span>
+  <span>Terima kasih! Survei Anda berhasil dikirim.</span>
+</div>
+
+<script>
+  const form     = document.getElementById('surveyForm');
+  const fill     = document.getElementById('progressFill');
+  const lbl      = document.getElementById('progressLabel');
+  const toast    = document.getElementById('toast');
+  const btnReset = document.getElementById('btnReset');
+
+  // Track required fields for progress
+  const required = [
+    () => form.nama.value.trim(),
+    () => form.telepon.value.trim(),
+    () => form.email.value.trim(),
+    () => form.alamat.value.trim(),
+    () => form.kategori.value,
+    () => document.querySelector('input[name="kepuasan"]:checked'),
+  ];
+
+  function updateProgress() {
+    const done  = required.filter(fn => fn()).length;
+    const pct   = Math.round((done / required.length) * 100);
+    fill.style.width = pct + '%';
+    lbl.textContent  = pct + '% terisi';
+  }
+
+  form.addEventListener('input', updateProgress);
+  form.addEventListener('change', updateProgress);
+
+  // Submit
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Minimal validation
+    const missing = [];
+    if (!form.nama.value.trim())    missing.push('Nama Lengkap');
+    if (!form.telepon.value.trim()) missing.push('Nomor Telepon');
+    if (!form.email.value.trim())   missing.push('Email');
+    if (!form.alamat.value.trim())  missing.push('Alamat');
+    if (!form.kategori.value)       missing.push('Kategori Pelanggan');
+    if (!document.querySelector('input[name="kepuasan"]:checked')) missing.push('Tingkat Kepuasan');
+
+    if (missing.length) {
+      alert('⚠️ Harap lengkapi:\n• ' + missing.join('\n• '));
+      return;
+    }
+
+    // Show toast
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+
+    form.reset();
+    updateProgress();
+  });
+
+  // Reset confirmation
+  btnReset.addEventListener('click', function(e) {
+    if (!confirm('Reset semua isian? Data yang sudah diisi akan hilang.')) {
+      e.preventDefault();
+    } else {
+      setTimeout(updateProgress, 50);
+    }
+  });
+</script>
+</body>
+</html>
