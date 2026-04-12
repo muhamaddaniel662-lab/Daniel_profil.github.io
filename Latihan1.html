@@ -41,7 +41,6 @@
             pointer-events: none;
         }
 
-        /* ── wrapper ── */
         .wrapper {
             position: relative; z-index: 1;
             width: 100%;
@@ -51,7 +50,6 @@
             gap: 1.4rem;
         }
 
-        /* ── shared card base ── */
         .card {
             background: linear-gradient(160deg, #1e1508 0%, #120e04 50%, #1a1208 100%);
             border: 1px solid var(--border-bold);
@@ -63,19 +61,18 @@
                 inset 0 1px 0 rgba(220,175,60,0.1);
         }
 
-        /* animation helpers */
         .anim { opacity: 0; animation: rise 0.9s cubic-bezier(0.22,1,0.36,1) forwards; }
         .anim:nth-child(1){ animation-delay:0.1s; }
         .anim:nth-child(2){ animation-delay:0.25s; }
         .anim:nth-child(3){ animation-delay:0.4s; }
         .anim:nth-child(4){ animation-delay:0.55s; }
+        .anim:nth-child(5){ animation-delay:0.7s; }
 
         @keyframes rise {
             from { opacity:0; transform:translateY(28px) scale(0.98); }
             to   { opacity:1; transform:translateY(0) scale(1); }
         }
 
-        /* ── ornament bars ── */
         .ornament-top {
             width:100%; height:3px;
             background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 15%, var(--gold-light) 50%, var(--gold-dark) 85%, transparent 100%);
@@ -85,7 +82,6 @@
             background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 15%, var(--gold) 50%, var(--gold-dark) 85%, transparent 100%);
         }
 
-        /* ── corner brackets ── */
         .corner { position:absolute; width:20px; height:20px; pointer-events:none; }
         .corner svg { width:100%; height:100%; }
         .corner.tl { top:12px; left:12px; }
@@ -93,9 +89,7 @@
         .corner.bl { bottom:12px; left:12px; transform:scaleY(-1); }
         .corner.br { bottom:12px; right:12px; transform:scale(-1); }
 
-        /* ════════════════════════════
-           CARD 1 – IDENTITAS
-        ════════════════════════════ */
+        /* ════ CARD 1 – IDENTITAS ════ */
         #card-identitas { position:relative; }
 
         .header {
@@ -148,9 +142,103 @@
         .nama-depan { font-style:italic; color:var(--gold-light); font-weight:400; }
         .nama-belakang { color:#e8dfc8; font-weight:300; }
 
-        /* ════════════════════════════
-           CARD 2 – PROFIL LIST
-        ════════════════════════════ */
+        /* ════ CARD 2 – RIWAYAT PENDIDIKAN ════ */
+        .section-title {
+            font-family:'Cinzel',serif;
+            font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
+            color:var(--gold);
+            padding: 1.6rem 2.5rem 0.8rem;
+            border-bottom:1px solid var(--border);
+        }
+
+        .table-wrap { padding: 1.6rem 2rem 2rem; overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family:'Cormorant Garamond',serif;
+        }
+
+        thead tr {
+            background: rgba(180,140,50,0.08);
+            border-bottom: 1px solid var(--border-bold);
+        }
+
+        thead th {
+            font-family:'Cinzel',serif;
+            font-size:0.5rem; letter-spacing:0.2em; text-transform:uppercase;
+            color:var(--gold);
+            padding:0.75rem 0.9rem;
+            text-align:left;
+            font-weight:400;
+            white-space:nowrap;
+        }
+        thead th:first-child { text-align:center; width:2.5rem; }
+        thead th:last-child,
+        thead th:nth-child(3) { text-align:center; }
+
+        tbody tr {
+            border-bottom:1px solid var(--border);
+            transition: background 0.2s;
+        }
+        tbody tr:last-child { border-bottom:none; }
+        tbody tr:hover { background: rgba(180,140,50,0.05); }
+
+        tbody td {
+            font-size:0.92rem; font-weight:300;
+            color:var(--cream);
+            padding:0.9rem 0.9rem;
+            letter-spacing:0.02em;
+            vertical-align:middle;
+        }
+        tbody td:first-child {
+            text-align:center;
+            font-family:'Cinzel',serif;
+            font-size:0.55rem;
+            color:var(--gold-dark);
+            font-weight:400;
+            letter-spacing:0.1em;
+        }
+        tbody td:nth-child(3),
+        tbody td:nth-child(4) {
+            text-align:center;
+            font-family:'Cinzel',serif;
+            font-size:0.7rem;
+            color:var(--gold-light);
+            letter-spacing:0.08em;
+        }
+
+        /* badge lembaga */
+        .lembaga-badge {
+            display:inline-flex;
+            flex-direction:column;
+            gap:0.1rem;
+        }
+        .lembaga-nama {
+            font-size:0.95rem;
+            font-weight:400;
+            color:var(--cream);
+        }
+        .lembaga-kota {
+            font-size:0.72rem;
+            font-weight:300;
+            color:var(--gold-dark);
+            font-style:italic;
+        }
+
+        /* row number circle */
+        .row-num {
+            display:inline-flex;
+            align-items:center; justify-content:center;
+            width:20px; height:20px;
+            border-radius:50%;
+            border:1px solid rgba(180,140,50,0.3);
+            background:rgba(180,140,50,0.06);
+            font-size:0.5rem;
+            color:var(--gold-dark);
+        }
+
+        /* ════ CARD 3 – PROFIL LIST ════ */
         #card-profil .section-title {
             font-family:'Cinzel',serif;
             font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
@@ -191,7 +279,6 @@
             border-radius:2px;
             padding:0.3rem 0.7rem;
             letter-spacing:0.03em;
-            position:relative;
         }
         .profil-list li::before {
             content:'◆';
@@ -199,9 +286,7 @@
             margin-right:0.4rem; vertical-align:middle;
         }
 
-        /* ════════════════════════════
-           CARD 3 – MEDIA SOSIAL
-        ════════════════════════════ */
+        /* ════ CARD 4 – MEDIA SOSIAL ════ */
         #card-sosial .section-title {
             font-family:'Cinzel',serif;
             font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
@@ -222,7 +307,7 @@
             padding:1.1rem 1.5rem;
             background: linear-gradient(160deg, #1e1508 0%, #120e04 100%);
             text-decoration:none;
-            transition: background 0.25s, transform 0.2s;
+            transition: background 0.25s;
             position:relative;
             overflow:hidden;
         }
@@ -241,7 +326,6 @@
             width:32px; height:32px; flex-shrink:0;
             border-radius:50%;
             display:flex; align-items:center; justify-content:center;
-            font-size:1rem;
             background: rgba(180,140,50,0.1);
             border:1px solid rgba(180,140,50,0.25);
             transition:filter 0.25s;
@@ -260,8 +344,6 @@
             white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
             transition:color 0.25s;
         }
-
-        /* external arrow */
         .ext-arrow {
             margin-left:auto; flex-shrink:0;
             font-size:0.6rem; color:var(--gold-dark);
@@ -269,7 +351,6 @@
         }
         .sosial-link:hover .ext-arrow { opacity:1; }
 
-        /* ── footer ── */
         .footer {
             padding:1.2rem 2.5rem;
             border-top:1px solid var(--border);
@@ -320,12 +401,78 @@
         <div class="ornament-bottom"></div>
     </div>
 
-    <!-- ═══ CARD 2 : PROFIL LIST ═══ -->
+    <!-- ═══ CARD 2 : RIWAYAT PENDIDIKAN ═══ -->
+    <div class="card anim" id="card-pendidikan">
+        <div class="ornament-top"></div>
+        <p class="section-title">Riwayat Pendidikan</p>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Nama Lembaga</th>
+                        <th>Tahun Masuk</th>
+                        <th>Tahun Lulus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="row-num">1</span></td>
+                        <td>
+                            <div class="lembaga-badge">
+                                <span class="lembaga-nama">SD Negeri Papandayan</span>
+                                <span class="lembaga-kota">Bogor</span>
+                            </div>
+                        </td>
+                        <td>2011</td>
+                        <td>2017</td>
+                    </tr>
+                    <tr>
+                        <td><span class="row-num">2</span></td>
+                        <td>
+                            <div class="lembaga-badge">
+                                <span class="lembaga-nama">SMP Negeri 3 Bogor</span>
+                                <span class="lembaga-kota">Bogor</span>
+                            </div>
+                        </td>
+                        <td>2017</td>
+                        <td>2020</td>
+                    </tr>
+                    <tr>
+                        <td><span class="row-num">3</span></td>
+                        <td>
+                            <div class="lembaga-badge">
+                                <span class="lembaga-nama">SMA Negeri 1 Bogor</span>
+                                <span class="lembaga-kota">Bogor</span>
+                            </div>
+                        </td>
+                        <td>2020</td>
+                        <td>2023</td>
+                    </tr>
+                    <tr>
+                        <td><span class="row-num">4</span></td>
+                        <td>
+                            <div class="lembaga-badge">
+                                <span class="lembaga-nama">Universitas Halim Sanusi</span>
+                                <span class="lembaga-kota">Bandung</span>
+                            </div>
+                        </td>
+                        <td>2024</td>
+                        <td>Sekarang</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="ornament-bottom"></div>
+    </div>
+
+    <!-- ═══ CARD 3 : PROFIL LIST ═══ -->
     <div class="card anim" id="card-profil">
         <div class="ornament-top"></div>
         <p class="section-title">Profil Lengkap</p>
 
-        <!-- Pengalaman Kerja -->
         <div class="profil-group">
             <p class="profil-group-label">💼 Pengalaman Kerja</p>
             <ul class="profil-list">
@@ -335,7 +482,6 @@
             </ul>
         </div>
 
-        <!-- Bahasa -->
         <div class="profil-group">
             <p class="profil-group-label">🌐 Bahasa yang Dikuasai</p>
             <ul class="profil-list">
@@ -349,31 +495,29 @@
             </ul>
         </div>
 
-        <!-- Makanan Favorit -->
         <div class="profil-group">
             <p class="profil-group-label">🍜 Makanan Favorit</p>
             <ul class="profil-list">
                 <li>Nasi Padang</li>
-                <li>Nasi goreng</li>
+                <li>Nasi Goreng</li>
                 <li>Mie Ayam</li>
                 <li>Sate Maranggi</li>
             </ul>
         </div>
 
-        <!-- Artis Favorit -->
         <div class="profil-group">
             <p class="profil-group-label">🎵 Artis Favorit</p>
             <ul class="profil-list">
                 <li>Mindaryn</li>
                 <li>Hindia</li>
-                <li>Katty Perry</li>
+                <li>Katy Perry</li>
             </ul>
         </div>
 
         <div class="ornament-bottom"></div>
     </div>
 
-    <!-- ═══ CARD 3 : MEDIA SOSIAL ═══ -->
+    <!-- ═══ CARD 4 : MEDIA SOSIAL ═══ -->
     <div class="card anim" id="card-sosial">
         <div class="ornament-top"></div>
         <p class="section-title">Media Sosial</p>
@@ -382,7 +526,7 @@
 
             <a href="https://www.instagram.com/danielfantasywriter/" target="_blank" rel="noopener noreferrer" class="sosial-link">
                 <div class="sosial-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <rect x="2" y="2" width="20" height="20" rx="5" stroke="#c9973a" stroke-width="1.5"/>
                         <circle cx="12" cy="12" r="4" stroke="#c9973a" stroke-width="1.5"/>
                         <circle cx="17.5" cy="6.5" r="1" fill="#c9973a"/>
@@ -397,7 +541,7 @@
 
             <a href="https://www.tiktok.com/@daniel_ar_01/" target="_blank" rel="noopener noreferrer" class="sosial-link">
                 <div class="sosial-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                         <path d="M19 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="#c9973a" stroke-width="1.5"/>
                         <path d="M10 12a3 3 0 1 0 3 3V6a4 4 0 0 0 4 4" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
                     </svg>
@@ -411,7 +555,7 @@
 
             <a href="https://github.com/muhamaddaniel662-lab/Daniel_Alfa_Rizie.github.io/" target="_blank" rel="noopener noreferrer" class="sosial-link">
                 <div class="sosial-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                         <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" stroke="#c9973a" stroke-width="0.8" fill="none"/>
                     </svg>
                 </div>
@@ -422,9 +566,9 @@
                 <span class="ext-arrow">↗</span>
             </a>
 
-            <a href="https://www.linkedin.com/in/muhamad-daniel-alfa-rizie-a8612a252/" target="_blank" rel="noopener noreferrer" class="sosial-link" style="grid-column:span 2;">
+            <a href="https://www.linkedin.com/in/muhamad-daniel-alfa-rizie-a8612a252/" target="_blank" rel="noopener noreferrer" class="sosial-link">
                 <div class="sosial-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
                         <rect x="2" y="2" width="20" height="20" rx="3" stroke="#c9973a" stroke-width="1.5"/>
                         <path d="M7 10v7M7 7v.5" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
                         <path d="M11 17v-4a2 2 0 0 1 4 0v4M11 10v7" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
@@ -432,7 +576,7 @@
                 </div>
                 <div class="sosial-info">
                     <span class="sosial-platform">LinkedIn</span>
-                    <span class="sosial-name">Muhamad Daniel Alfa Rizie</span>
+                    <span class="sosial-name">Muhamad Daniel</span>
                 </div>
                 <span class="ext-arrow">↗</span>
             </a>
