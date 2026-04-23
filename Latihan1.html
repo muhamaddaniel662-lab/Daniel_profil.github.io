@@ -8,589 +8,272 @@
     <style>
         :root {
             --gold-light:  #f0d080;
-            --gold:        #c9973a;
-            --gold-dark:   #8a6420;
-            --cream:       #fdf8ee;
-            --ink:         #1a1208;
-            --border:      rgba(180,140,60,0.25);
+            --gold:         #c9973a;
+            --gold-dark:    #8a6420;
+            --cream:        #fdf8ee;
+            --ink:          #1a1208;
+            --border:       rgba(180,140,60,0.25);
             --border-bold: rgba(180,140,60,0.6);
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html, body { width: 100%; }
-
+        
         body {
             font-family: 'Cormorant Garamond', serif;
             background: var(--ink);
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             min-height: 100vh;
-            padding: 3rem 1.5rem 4rem;
+            padding: 2rem 1.5rem 4rem;
             overflow-x: hidden;
+            color: var(--cream);
         }
 
         body::before {
             content: '';
-            position: fixed; inset: 0; z-index: 0;
-            background:
+            position: fixed; inset: 0; z-index: -1;
+            background: 
                 radial-gradient(ellipse 70% 55% at 15% 5%,  rgba(180,130,40,0.12) 0%, transparent 55%),
-                radial-gradient(ellipse 60% 50% at 85% 95%, rgba(100,70,10,0.18) 0%, transparent 55%),
-                radial-gradient(ellipse 40% 40% at 50% 50%, rgba(30,20,5,0.6) 0%, transparent 70%);
+                radial-gradient(ellipse 60% 50% at 85% 95%, rgba(100,70,10,0.18) 0%, transparent 55%);
             pointer-events: none;
         }
 
-        .wrapper {
-            position: relative; z-index: 1;
-            width: 100%;
-            max-width: 520px;
+        /* ═══ NAVIGATION ═══ */
+        nav {
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+            margin-bottom: 2.5rem;
             display: flex;
-            flex-direction: column;
-            gap: 1.4rem;
+            gap: 0.5rem;
+            background: rgba(26, 18, 8, 0.8);
+            padding: 0.6rem;
+            border: 1px solid var(--border-bold);
+            border-radius: 4px;
+            backdrop-filter: blur(8px);
         }
 
+        .nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--gold-dark);
+            font-family: 'Cinzel', serif;
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.5rem 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .nav-btn.active {
+            color: var(--gold-light);
+            background: rgba(180, 140, 50, 0.15);
+            box-shadow: inset 0 0 10px rgba(180, 140, 50, 0.1);
+        }
+
+        /* ═══ WRAPPER & PAGE CONTROL ═══ */
+        .wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .page {
+            display: none; /* Sembunyikan semua halaman secara default */
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .page.active {
+            display: block; /* Tampilkan hanya yang aktif */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══ CARD STYLES (REUSED FROM ORIGINAL) ═══ */
         .card {
             background: linear-gradient(160deg, #1e1508 0%, #120e04 50%, #1a1208 100%);
             border: 1px solid var(--border-bold);
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow:
-                0 0 0 1px rgba(200,150,40,0.06),
-                0 20px 60px rgba(0,0,0,0.7),
-                inset 0 1px 0 rgba(220,175,60,0.1);
+            border-radius: 4px; overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+            position: relative;
         }
 
-        .anim { opacity: 0; animation: rise 0.9s cubic-bezier(0.22,1,0.36,1) forwards; }
-        .anim:nth-child(1){ animation-delay:0.1s; }
-        .anim:nth-child(2){ animation-delay:0.25s; }
-        .anim:nth-child(3){ animation-delay:0.4s; }
-        .anim:nth-child(4){ animation-delay:0.55s; }
-        .anim:nth-child(5){ animation-delay:0.7s; }
-
-        @keyframes rise {
-            from { opacity:0; transform:translateY(28px) scale(0.98); }
-            to   { opacity:1; transform:translateY(0) scale(1); }
-        }
-
-        .ornament-top {
+        .ornament-top, .ornament-bottom {
             width:100%; height:3px;
             background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 15%, var(--gold-light) 50%, var(--gold-dark) 85%, transparent 100%);
         }
-        .ornament-bottom {
-            width:100%; height:3px;
-            background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 15%, var(--gold) 50%, var(--gold-dark) 85%, transparent 100%);
-        }
 
-        .corner { position:absolute; width:20px; height:20px; pointer-events:none; }
-        .corner svg { width:100%; height:100%; }
-        .corner.tl { top:12px; left:12px; }
-        .corner.tr { top:12px; right:12px; transform:scaleX(-1); }
-        .corner.bl { bottom:12px; left:12px; transform:scaleY(-1); }
-        .corner.br { bottom:12px; right:12px; transform:scale(-1); }
-
-        /* ════ CARD 1 – IDENTITAS ════ */
-        #card-identitas { position:relative; }
-
-        .header {
-            padding: 2.6rem 3rem 2.2rem;
-            text-align: center;
-        }
-        .header::before, .header::after {
-            content:''; display:block; height:1px;
-            background: linear-gradient(90deg, transparent, var(--border-bold), transparent);
-            margin: 0 1.5rem;
-        }
-        .header::before { margin-bottom: 1.8rem; }
-        .header::after  { margin-top:  1.8rem; }
-
-        .eyebrow {
-            font-family:'Cinzel',serif;
-            font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase;
-            color:var(--gold); margin-bottom:0.9rem;
-        }
-        h1 {
-            font-family:'Cinzel',serif;
-            font-size:2.6rem; font-weight:700; letter-spacing:0.16em; line-height:1;
-            background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
-            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-        }
-        .diamond {
-            display:inline-block; width:6px; height:6px;
-            background:var(--gold); transform:rotate(45deg);
-            margin: 1rem auto 0;
-        }
+        /* Identitas Styles */
+        .header { padding: 2.6rem 3rem 2.2rem; text-align: center; }
+        .eyebrow { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.9rem; }
+        h1 { font-family:'Cinzel',serif; font-size:2.6rem; font-weight:700; letter-spacing:0.16em; line-height:1; background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        
+        .photo-frame { display: flex; justify-content: center; padding: 1rem 3rem 1.5rem; }
+        .photo-outer { position: relative; width: 110px; height: 110px; }
+        .photo-inner { width:100%; height:100%; border-radius:50%; overflow:hidden; border:2px solid var(--gold-dark); position:relative; }
+        .photo-inner img { width:100%; height:100%; object-fit:cover; }
 
         .body { padding: 0 3rem 2.4rem; }
+        .field { display:flex; align-items:baseline; justify-content:space-between; padding:1.1rem 0; border-bottom:1px solid var(--border); }
+        .label { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.26em; color:var(--gold-dark); }
+        .value { font-size:1.1rem; text-align:right; }
 
-        .field {
-            display:flex; align-items:baseline; justify-content:space-between;
-            padding:1.1rem 0; border-bottom:1px solid var(--border);
-        }
-        .field:last-child { border-bottom:none; }
-
-        .label {
-            font-family:'Cinzel',serif;
-            font-size:0.58rem; letter-spacing:0.26em; text-transform:uppercase;
-            color:var(--gold-dark); flex-shrink:0; padding-right:1rem;
-        }
-        .value {
-            font-family:'Cormorant Garamond',serif;
-            font-size:1.1rem; font-weight:300; letter-spacing:0.04em;
-            color:var(--cream); text-align:right;
-        }
-        .nama-depan { font-style:italic; color:var(--gold-light); font-weight:400; }
-        .nama-belakang { color:#e8dfc8; font-weight:300; }
-
-        /* ════ CARD 2 – RIWAYAT PENDIDIKAN ════ */
-        .section-title {
-            font-family:'Cinzel',serif;
-            font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
-            color:var(--gold);
-            padding: 1.6rem 2.5rem 0.8rem;
-            border-bottom:1px solid var(--border);
-        }
-
+        /* Table & List Styles */
+        .section-title { font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); padding: 1.6rem 2.5rem 0.8rem; border-bottom:1px solid var(--border); }
         .table-wrap { padding: 1.6rem 2rem 2rem; overflow-x: auto; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-family:'Cormorant Garamond',serif;
-        }
-
-        thead tr {
-            background: rgba(180,140,50,0.08);
-            border-bottom: 1px solid var(--border-bold);
-        }
-
-        thead th {
-            font-family:'Cinzel',serif;
-            font-size:0.5rem; letter-spacing:0.2em; text-transform:uppercase;
-            color:var(--gold);
-            padding:0.75rem 0.9rem;
-            text-align:left;
-            font-weight:400;
-            white-space:nowrap;
-        }
-        thead th:first-child { text-align:center; width:2.5rem; }
-        thead th:last-child,
-        thead th:nth-child(3) { text-align:center; }
-
-        tbody tr {
-            border-bottom:1px solid var(--border);
-            transition: background 0.2s;
-        }
-        tbody tr:last-child { border-bottom:none; }
-        tbody tr:hover { background: rgba(180,140,50,0.05); }
-
-        tbody td {
-            font-size:0.92rem; font-weight:300;
-            color:var(--cream);
-            padding:0.9rem 0.9rem;
-            letter-spacing:0.02em;
-            vertical-align:middle;
-        }
-        tbody td:first-child {
-            text-align:center;
-            font-family:'Cinzel',serif;
-            font-size:0.55rem;
-            color:var(--gold-dark);
-            font-weight:400;
-            letter-spacing:0.1em;
-        }
-        tbody td:nth-child(3),
-        tbody td:nth-child(4) {
-            text-align:center;
-            font-family:'Cinzel',serif;
-            font-size:0.7rem;
-            color:var(--gold-light);
-            letter-spacing:0.08em;
-        }
-
-        /* badge lembaga */
-        .lembaga-badge {
-            display:inline-flex;
-            flex-direction:column;
-            gap:0.1rem;
-        }
-        .lembaga-nama {
-            font-size:0.95rem;
-            font-weight:400;
-            color:var(--cream);
-        }
-        .lembaga-kota {
-            font-size:0.72rem;
-            font-weight:300;
-            color:var(--gold-dark);
-            font-style:italic;
-        }
-
-        /* row number circle */
-        .row-num {
-            display:inline-flex;
-            align-items:center; justify-content:center;
-            width:20px; height:20px;
-            border-radius:50%;
-            border:1px solid rgba(180,140,50,0.3);
-            background:rgba(180,140,50,0.06);
-            font-size:0.5rem;
-            color:var(--gold-dark);
-        }
-
-        /* ════ CARD 3 – PROFIL LIST ════ */
-        #card-profil .section-title {
-            font-family:'Cinzel',serif;
-            font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
-            color:var(--gold);
-            padding: 1.6rem 2.5rem 0.8rem;
-            border-bottom:1px solid var(--border);
-        }
+        table { width:100%; border-collapse:collapse; }
+        thead th { font-family:'Cinzel',serif; font-size:0.5rem; color:var(--gold); padding:0.75rem 0.9rem; text-align:left; border-bottom:1px solid var(--border-bold); }
+        tbody td { font-size:0.92rem; padding:0.9rem 0.9rem; border-bottom:1px solid var(--border); }
 
         .profil-group { padding: 1.2rem 2.5rem 0; }
-        .profil-group:last-child { padding-bottom: 2rem; }
+        .profil-group-label { font-family:'Cinzel',serif; font-size:0.55rem; color:var(--gold-dark); margin-bottom:0.7rem; display:flex; align-items:center; gap:0.6rem; }
+        .profil-group-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, var(--border), transparent); }
+        .profil-list { list-style:none; display:flex; flex-wrap:wrap; gap:0.45rem; padding-bottom:1.2rem; }
+        .profil-list li { font-size:0.9rem; background:rgba(180,140,50,0.07); border:1px solid rgba(180,140,50,0.2); border-radius:2px; padding:0.3rem 0.7rem; }
 
-        .profil-group-label {
-            font-family:'Cinzel',serif;
-            font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase;
-            color:var(--gold-dark);
-            display:flex; align-items:center; gap:0.6rem;
-            margin-bottom:0.7rem;
-        }
-        .profil-group-label::after {
-            content:''; flex:1; height:1px;
-            background: linear-gradient(90deg, var(--border), transparent);
-        }
-
-        .profil-list {
-            list-style:none;
-            display:flex; flex-wrap:wrap; gap:0.45rem;
-            padding-bottom:1.2rem;
-            border-bottom:1px solid var(--border);
-        }
-        .profil-group:last-child .profil-list { border-bottom:none; padding-bottom:0; }
-
-        .profil-list li {
-            font-family:'Cormorant Garamond',serif;
-            font-size:0.9rem; font-weight:300;
-            color:var(--cream);
-            background: rgba(180,140,50,0.07);
-            border:1px solid rgba(180,140,50,0.2);
-            border-radius:2px;
-            padding:0.3rem 0.7rem;
-            letter-spacing:0.03em;
-        }
-        .profil-list li::before {
-            content:'◆';
-            font-size:0.35rem; color:var(--gold-dark);
-            margin-right:0.4rem; vertical-align:middle;
-        }
-
-        /* ════ CARD 4 – MEDIA SOSIAL ════ */
-        #card-sosial .section-title {
-            font-family:'Cinzel',serif;
-            font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase;
-            color:var(--gold);
-            padding: 1.6rem 2.5rem 0.8rem;
-            border-bottom:1px solid var(--border);
-        }
-
-        .sosial-grid {
-            display:grid;
-            grid-template-columns:1fr 1fr;
-            gap:1px;
-            background: var(--border);
-        }
-
-        .sosial-link {
-            display:flex; align-items:center; gap:0.85rem;
-            padding:1.1rem 1.5rem;
-            background: linear-gradient(160deg, #1e1508 0%, #120e04 100%);
-            text-decoration:none;
-            transition: background 0.25s;
-            position:relative;
-            overflow:hidden;
-        }
-        .sosial-link::after {
-            content:'';
-            position:absolute; inset:0;
-            background: linear-gradient(135deg, rgba(201,151,58,0.07), transparent);
-            opacity:0; transition:opacity 0.25s;
-        }
-        .sosial-link:hover { background: linear-gradient(160deg, #261b0a, #1a1208); }
-        .sosial-link:hover::after { opacity:1; }
-        .sosial-link:hover .sosial-name { color:var(--gold-light); }
-        .sosial-link:hover .sosial-icon { filter:brightness(1.4); }
-
-        .sosial-icon {
-            width:32px; height:32px; flex-shrink:0;
-            border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            background: rgba(180,140,50,0.1);
-            border:1px solid rgba(180,140,50,0.25);
-            transition:filter 0.25s;
-        }
-        .sosial-info { display:flex; flex-direction:column; gap:0.15rem; min-width:0; }
-        .sosial-platform {
-            font-family:'Cinzel',serif;
-            font-size:0.5rem; letter-spacing:0.2em; text-transform:uppercase;
-            color:var(--gold-dark);
-        }
-        .sosial-name {
-            font-family:'Cormorant Garamond',serif;
-            font-size:0.88rem; font-weight:300;
-            color:var(--cream);
-            letter-spacing:0.02em;
-            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-            transition:color 0.25s;
-        }
-        .ext-arrow {
-            margin-left:auto; flex-shrink:0;
-            font-size:0.6rem; color:var(--gold-dark);
-            opacity:0; transition:opacity 0.2s;
-        }
-        .sosial-link:hover .ext-arrow { opacity:1; }
-
-        .footer {
-            padding:1.2rem 2.5rem;
-            border-top:1px solid var(--border);
-            display:flex; align-items:center; justify-content:space-between;
-        }
-        .footer-left {
-            font-family:'Cormorant',serif;
-            font-style:italic; font-size:0.78rem; font-weight:300;
-            color:var(--gold-dark); letter-spacing:0.06em;
-        }
-        .paw { font-size:0.85rem; opacity:0.45; filter:sepia(1); }
+        /* Social Grid */
+        .sosial-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
+        .sosial-link { display:flex; align-items:center; gap:0.85rem; padding:1.1rem 1.5rem; background:#120e04; text-decoration:none; transition: 0.25s; }
+        .sosial-link:hover { background: #1e1508; }
+        .sosial-name { font-size:0.88rem; color:var(--cream); }
+        .sosial-platform { font-family:'Cinzel',serif; font-size:0.45rem; color:var(--gold-dark); display:block; }
+        
+        .footer { padding:1.2rem 2.5rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
+    <nav>
+        <button class="nav-btn active" onclick="showPage('page-identitas', this)">Profil</button>
+        <button class="nav-btn" onclick="showPage('page-pendidikan', this)">Edukasi</button>
+        <button class="nav-btn" onclick="showPage('page-lengkap', this)">Detail</button>
+        <button class="nav-btn" onclick="showPage('page-sosial', this)">Kontak</button>
+    </nav>
 
-    <!-- ═══ CARD 1 : IDENTITAS ═══ -->
-    <div class="card anim" id="card-identitas">
-        <div class="corner tl"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12L1 1L12 1" stroke="#c9973a" stroke-width="1"/><path d="M1 6L6 1" stroke="#c9973a" stroke-width="0.5" opacity="0.5"/></svg></div>
-        <div class="corner tr"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12L1 1L12 1" stroke="#c9973a" stroke-width="1"/><path d="M1 6L6 1" stroke="#c9973a" stroke-width="0.5" opacity="0.5"/></svg></div>
-        <div class="corner bl"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12L1 1L12 1" stroke="#c9973a" stroke-width="1"/><path d="M1 6L6 1" stroke="#c9973a" stroke-width="0.5" opacity="0.5"/></svg></div>
-        <div class="corner br"><svg viewBox="0 0 24 24" fill="none"><path d="M1 12L1 1L12 1" stroke="#c9973a" stroke-width="1"/><path d="M1 6L6 1" stroke="#c9973a" stroke-width="0.5" opacity="0.5"/></svg></div>
+    <div class="wrapper">
 
-        <div class="ornament-top"></div>
-        <div class="header">
-            <p class="eyebrow">Kartu Identitas Mahasiswa</p>
-            <h1>BIODATA</h1>
-            <div class="diamond"></div>
-        </div>
-        <div class="body">
-            <div class="field">
-                <span class="label">Nama</span>
-                <span class="value">
-                    <span class="nama-depan">Muhamad Daniel</span>
-                    <span class="nama-belakang"> Alfa Rizie</span>
-                </span>
+        <div id="page-identitas" class="page active">
+            <div class="card">
+                <div class="ornament-top"></div>
+                <div class="header">
+                    <p class="eyebrow">Kartu Identitas Mahasiswa</p>
+                    <h1>BIODATA</h1>
+                </div>
+                <div class="photo-frame">
+                    <div class="photo-outer">
+                        <div class="photo-inner">
+                            <img src="C:\Users\Lenovo\Downloads\morales.jpg" alt="Foto Profil" onerror="this.src='https://via.placeholder.com/110?text=Daniel'">
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="field"><span class="label">Nama</span><span class="value">Muhamad Daniel Alfa Rizie</span></div>
+                    <div class="field"><span class="label">NIM</span><span class="value">124005005</span></div>
+                    <div class="field"><span class="label">Usia</span><span class="value">21 Tahun</span></div>
+                </div>
+                <div class="ornament-bottom"></div>
             </div>
-            <div class="field">
-                <span class="label">NIM</span>
-                <span class="value">124005005</span>
+        </div>
+
+        <div id="page-pendidikan" class="page">
+            <div class="card">
+                <div class="ornament-top"></div>
+                <p class="section-title">Riwayat Pendidikan</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>No.</th><th>Lembaga</th><th>Masuk</th><th>Lulus</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>1</td><td>SDN Papandayan</td><td>2011</td><td>2017</td></tr>
+                            <tr><td>2</td><td>SMPN 3 Bogor</td><td>2017</td><td>2020</td></tr>
+                            <tr><td>3</td><td>SMAN 1 Bogor</td><td>2020</td><td>2023</td></tr>
+                            <tr><td>4</td><td>Univ. Halim Sanusi</td><td>2024</td><td>Skrg</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ornament-bottom"></div>
             </div>
-            <div class="field">
-                <span class="label">Usia</span>
-                <span class="value">21 Tahun</span>
+        </div>
+
+        <div id="page-lengkap" class="page">
+            <div class="card">
+                <div class="ornament-top"></div>
+                <p class="section-title">Keahlian & Minat</p>
+                <div class="profil-group">
+                    <p class="profil-group-label">💼 Pengalaman</p>
+                    <ul class="profil-list">
+                        <li>Web Developer</li><li>Asisten Lab</li><li>Content Creator</li>
+                    </ul>
+                </div>
+                <div class="profil-group">
+                    <p class="profil-group-label">🌐 Bahasa</p>
+                    <ul class="profil-list">
+                        <li>Indonesia</li><li>Inggris</li><li>Jepang</li><li>Python</li>
+                    </ul>
+                </div>
+                <div class="profil-group" style="padding-bottom: 2rem;">
+                    <p class="profil-group-label">🍜 Favorit</p>
+                    <ul class="profil-list">
+                        <li>Nasi Padang</li><li>Mie Ayam</li><li>Sate Maranggi</li>
+                    </ul>
+                </div>
+                <div class="ornament-bottom"></div>
             </div>
         </div>
-        <div class="ornament-bottom"></div>
+
+        <div id="page-sosial" class="page">
+            <div class="card">
+                <div class="ornament-top"></div>
+                <p class="section-title">Media Sosial</p>
+                <div class="sosial-grid">
+                    <a href="#" class="sosial-link">
+                        <div class="sosial-info"><span class="sosial-platform">Instagram</span><span class="sosial-name">@daniel.alfarizie</span></div>
+                    </a>
+                    <a href="#" class="sosial-link">
+                        <div class="sosial-info"><span class="sosial-platform">TikTok</span><span class="sosial-name">@daniel.rizie</span></div>
+                    </a>
+                    <a href="#" class="sosial-link">
+                        <div class="sosial-info"><span class="sosial-platform">GitHub</span><span class="sosial-name">danielalfarizie</span></div>
+                    </a>
+                    <a href="#" class="sosial-link">
+                        <div class="sosial-info"><span class="sosial-platform">LinkedIn</span><span class="sosial-name">Muhamad Daniel</span></div>
+                    </a>
+                </div>
+                <div class="footer">
+                    <span style="font-style: italic; color: var(--gold-dark);">Kucing Hitam</span>
+                    <span>🐈‍⬛</span>
+                </div>
+                <div class="ornament-bottom"></div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- ═══ CARD 2 : RIWAYAT PENDIDIKAN ═══ -->
-    <div class="card anim" id="card-pendidikan">
-        <div class="ornament-top"></div>
-        <p class="section-title">Riwayat Pendidikan</p>
+    <script>
+        function showPage(pageId, btn) {
+            // Sembunyikan semua halaman
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
 
-        <div class="table-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Nama Lembaga</th>
-                        <th>Tahun Masuk</th>
-                        <th>Tahun Lulus</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="row-num">1</span></td>
-                        <td>
-                            <div class="lembaga-badge">
-                                <span class="lembaga-nama">SD Negeri Papandayan</span>
-                                <span class="lembaga-kota">Bogor</span>
-                            </div>
-                        </td>
-                        <td>2011</td>
-                        <td>2017</td>
-                    </tr>
-                    <tr>
-                        <td><span class="row-num">2</span></td>
-                        <td>
-                            <div class="lembaga-badge">
-                                <span class="lembaga-nama">SMP Negeri 3 Bogor</span>
-                                <span class="lembaga-kota">Bogor</span>
-                            </div>
-                        </td>
-                        <td>2017</td>
-                        <td>2020</td>
-                    </tr>
-                    <tr>
-                        <td><span class="row-num">3</span></td>
-                        <td>
-                            <div class="lembaga-badge">
-                                <span class="lembaga-nama">SMA Negeri 1 Bogor</span>
-                                <span class="lembaga-kota">Bogor</span>
-                            </div>
-                        </td>
-                        <td>2020</td>
-                        <td>2023</td>
-                    </tr>
-                    <tr>
-                        <td><span class="row-num">4</span></td>
-                        <td>
-                            <div class="lembaga-badge">
-                                <span class="lembaga-nama">Universitas Halim Sanusi</span>
-                                <span class="lembaga-kota">Bandung</span>
-                            </div>
-                        </td>
-                        <td>2024</td>
-                        <td>Sekarang</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            // Tampilkan halaman yang dipilih
+            document.getElementById(pageId).classList.add('active');
 
-        <div class="ornament-bottom"></div>
-    </div>
-
-    <!-- ═══ CARD 3 : PROFIL LIST ═══ -->
-    <div class="card anim" id="card-profil">
-        <div class="ornament-top"></div>
-        <p class="section-title">Profil Lengkap</p>
-
-        <div class="profil-group">
-            <p class="profil-group-label">💼 Pengalaman Kerja</p>
-            <ul class="profil-list">
-                <li>Freelance Web Developer</li>
-                <li>Asisten Lab Komputer</li>
-                <li>Content Creator Kampus</li>
-            </ul>
-        </div>
-
-        <div class="profil-group">
-            <p class="profil-group-label">🌐 Bahasa yang Dikuasai</p>
-            <ul class="profil-list">
-                <li>Bahasa Indonesia</li>
-                <li>Bahasa Inggris</li>
-                <li>Bahasa Sunda</li>
-                <li>Bahasa Jepang</li>
-                <li>HTML / CSS</li>
-                <li>JavaScript</li>
-                <li>Python</li>
-            </ul>
-        </div>
-
-        <div class="profil-group">
-            <p class="profil-group-label">🍜 Makanan Favorit</p>
-            <ul class="profil-list">
-                <li>Nasi Padang</li>
-                <li>Nasi Goreng</li>
-                <li>Mie Ayam</li>
-                <li>Sate Maranggi</li>
-            </ul>
-        </div>
-
-        <div class="profil-group">
-            <p class="profil-group-label">🎵 Artis Favorit</p>
-            <ul class="profil-list">
-                <li>Mindaryn</li>
-                <li>Hindia</li>
-                <li>Katy Perry</li>
-            </ul>
-        </div>
-
-        <div class="ornament-bottom"></div>
-    </div>
-
-    <!-- ═══ CARD 4 : MEDIA SOSIAL ═══ -->
-    <div class="card anim" id="card-sosial">
-        <div class="ornament-top"></div>
-        <p class="section-title">Media Sosial</p>
-
-        <div class="sosial-grid">
-
-            <a href="https://www.instagram.com/danielfantasywriter/" target="_blank" rel="noopener noreferrer" class="sosial-link">
-                <div class="sosial-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <rect x="2" y="2" width="20" height="20" rx="5" stroke="#c9973a" stroke-width="1.5"/>
-                        <circle cx="12" cy="12" r="4" stroke="#c9973a" stroke-width="1.5"/>
-                        <circle cx="17.5" cy="6.5" r="1" fill="#c9973a"/>
-                    </svg>
-                </div>
-                <div class="sosial-info">
-                    <span class="sosial-platform">Instagram</span>
-                    <span class="sosial-name">@daniel.alfarizie</span>
-                </div>
-                <span class="ext-arrow">↗</span>
-            </a>
-
-            <a href="https://www.tiktok.com/@daniel_ar_01/" target="_blank" rel="noopener noreferrer" class="sosial-link">
-                <div class="sosial-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                        <path d="M19 3H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" stroke="#c9973a" stroke-width="1.5"/>
-                        <path d="M10 12a3 3 0 1 0 3 3V6a4 4 0 0 0 4 4" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div class="sosial-info">
-                    <span class="sosial-platform">TikTok</span>
-                    <span class="sosial-name">@daniel.rizie</span>
-                </div>
-                <span class="ext-arrow">↗</span>
-            </a>
-
-            <a href="https://github.com/muhamaddaniel662-lab/Daniel_Alfa_Rizie.github.io/" target="_blank" rel="noopener noreferrer" class="sosial-link">
-                <div class="sosial-icon">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" stroke="#c9973a" stroke-width="0.8" fill="none"/>
-                    </svg>
-                </div>
-                <div class="sosial-info">
-                    <span class="sosial-platform">GitHub</span>
-                    <span class="sosial-name">danielalfarizie</span>
-                </div>
-                <span class="ext-arrow">↗</span>
-            </a>
-
-            <a href="https://www.linkedin.com/in/muhamad-daniel-alfa-rizie-a8612a252/" target="_blank" rel="noopener noreferrer" class="sosial-link">
-                <div class="sosial-icon">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                        <rect x="2" y="2" width="20" height="20" rx="3" stroke="#c9973a" stroke-width="1.5"/>
-                        <path d="M7 10v7M7 7v.5" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M11 17v-4a2 2 0 0 1 4 0v4M11 10v7" stroke="#c9973a" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                </div>
-                <div class="sosial-info">
-                    <span class="sosial-platform">LinkedIn</span>
-                    <span class="sosial-name">Muhamad Daniel</span>
-                </div>
-                <span class="ext-arrow">↗</span>
-            </a>
-
-        </div>
-
-        <div class="footer">
-            <span class="footer-left">Kucing Hitam</span>
-            <span class="paw">🐈‍⬛</span>
-        </div>
-        <div class="ornament-bottom"></div>
-    </div>
-
-</div>
+            // Update status tombol navigasi
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            // Scroll ke atas saat ganti halaman
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+    </script>
 
 </body>
 </html>
