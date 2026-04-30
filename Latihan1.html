@@ -30,6 +30,7 @@
             color: var(--cream);
         }
 
+        /* radial gradient ambient */
         body::before {
             content: '';
             position: fixed; inset: 0; z-index: -1;
@@ -37,6 +38,35 @@
                 radial-gradient(ellipse 70% 55% at 15% 5%,  rgba(180,130,40,0.12) 0%, transparent 55%),
                 radial-gradient(ellipse 60% 50% at 85% 95%, rgba(100,70,10,0.18) 0%, transparent 55%);
             pointer-events: none;
+        }
+
+        /* ═══════════════════════════════════════
+           BACKGROUND IMAGE LAYER
+        ═══════════════════════════════════════ */
+        #bg-image {
+            position: fixed; inset: 0;
+            z-index: -3;                       /* paling bawah */
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+            pointer-events: none;
+        }
+        /* fade-in setelah gambar siap */
+        #bg-image.loaded { opacity: 1; }
+
+        /* overlay gelap agar teks tetap terbaca */
+        #bg-image::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                160deg,
+                rgba(10,7,2,0.80) 0%,
+                rgba(10,7,2,0.65) 50%,
+                rgba(10,7,2,0.82) 100%
+            );
         }
 
         /* ═══ NAVIGATION ═══ */
@@ -82,20 +112,18 @@
         }
 
         .page {
-            display: none; /* Sembunyikan semua halaman secara default */
+            display: none;
             animation: fadeIn 0.6s ease-out forwards;
         }
 
-        .page.active {
-            display: block; /* Tampilkan hanya yang aktif */
-        }
+        .page.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* ═══ CARD STYLES (REUSED FROM ORIGINAL) ═══ */
+        /* ═══ CARD STYLES ═══ */
         .card {
             background: linear-gradient(160deg, #1e1508 0%, #120e04 50%, #1a1208 100%);
             border: 1px solid var(--border-bold);
@@ -109,7 +137,7 @@
             background: linear-gradient(90deg, transparent 0%, var(--gold-dark) 15%, var(--gold-light) 50%, var(--gold-dark) 85%, transparent 100%);
         }
 
-        /* Identitas Styles */
+        /* Identitas */
         .header { padding: 2.6rem 3rem 2.2rem; text-align: center; }
         .eyebrow { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); margin-bottom:0.9rem; }
         h1 { font-family:'Cinzel',serif; font-size:2.6rem; font-weight:700; letter-spacing:0.16em; line-height:1; background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
@@ -124,7 +152,7 @@
         .label { font-family:'Cinzel',serif; font-size:0.58rem; letter-spacing:0.26em; color:var(--gold-dark); }
         .value { font-size:1.1rem; text-align:right; }
 
-        /* Table & List Styles */
+        /* Table & List */
         .section-title { font-family:'Cinzel',serif; font-size:0.6rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--gold); padding: 1.6rem 2.5rem 0.8rem; border-bottom:1px solid var(--border); }
         .table-wrap { padding: 1.6rem 2rem 2rem; overflow-x: auto; }
         table { width:100%; border-collapse:collapse; }
@@ -137,7 +165,7 @@
         .profil-list { list-style:none; display:flex; flex-wrap:wrap; gap:0.45rem; padding-bottom:1.2rem; }
         .profil-list li { font-size:0.9rem; background:rgba(180,140,50,0.07); border:1px solid rgba(180,140,50,0.2); border-radius:2px; padding:0.3rem 0.7rem; }
 
-        /* Social Grid */
+        /* Social */
         .sosial-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
         .sosial-link { display:flex; align-items:center; gap:0.85rem; padding:1.1rem 1.5rem; background:#120e04; text-decoration:none; transition: 0.25s; }
         .sosial-link:hover { background: #1e1508; }
@@ -145,9 +173,67 @@
         .sosial-platform { font-family:'Cinzel',serif; font-size:0.45rem; color:var(--gold-dark); display:block; }
         
         .footer { padding:1.2rem 2.5rem; border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; }
+        /* ═══ TOMBOL GANTI BACKGROUND ═══ */
+        #bg-picker-btn {
+            position: fixed;
+            bottom: 1.4rem;
+            right: 1.4rem;
+            z-index: 999;
+            background: rgba(26,18,8,0.88);
+            border: 1px solid var(--border-bold);
+            border-radius: 3px;
+            color: var(--gold);
+            font-family: 'Cinzel', serif;
+            font-size: 0.48rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 0.55rem 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: background 0.2s, color 0.2s;
+            display: flex; align-items: center; gap: 0.5rem;
+        }
+        #bg-picker-btn:hover { background: rgba(40,28,10,0.95); color: var(--gold-light); }
+        #bg-picker-btn .btn-icon { font-size: 0.85rem; }
+
+        /* tombol reset (muncul saat ada gambar) */
+        #bg-reset-btn {
+            position: fixed;
+            bottom: 1.4rem;
+            right: 10rem;
+            z-index: 999;
+            background: rgba(26,18,8,0.88);
+            border: 1px solid rgba(180,140,60,0.35);
+            border-radius: 3px;
+            color: var(--gold-dark);
+            font-family: 'Cinzel', serif;
+            font-size: 0.48rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            padding: 0.55rem 0.9rem;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: all 0.2s;
+            display: none; align-items: center; gap: 0.5rem;
+        }
+        #bg-reset-btn:hover { color: var(--cream); border-color: var(--border-bold); }
     </style>
 </head>
 <body>
+
+    <!-- ═══ BACKGROUND IMAGE ELEMENT ═══ -->
+    <div id="bg-image"></div>
+
+    <!-- input file tersembunyi -->
+    <input type="file" id="bg-file-input" accept="image/*" style="display:none;">
+
+    <!-- tombol di pojok kanan bawah -->
+    <button id="bg-picker-btn" onclick="document.getElementById('bg-file-input').click()">
+        <span class="btn-icon">🖼</span> Ganti Background
+    </button>
+    <button id="bg-reset-btn" onclick="resetBackground()">
+        ✕ Hapus Background
+    </button>
 
     <nav>
         <button class="nav-btn active" onclick="showPage('page-identitas', this)">Profil</button>
@@ -168,7 +254,7 @@
                 <div class="photo-frame">
                     <div class="photo-outer">
                         <div class="photo-inner">
-                            <img src="C:\Users\Lenovo\Downloads\morales.jpg" alt="Foto Profil" onerror="this.src='https://via.placeholder.com/110?text=Daniel'">
+                            <img src="https://github.com/muhamaddaniel662-lab/Daniel_Alfa_Rizie.github.io/blob/main/morales.jpg" alt="Foto Profil" onerror="this.src='https://via.placeholder.com/110?text=Daniel'">
                         </div>
                     </div>
                 </div>
@@ -257,21 +343,61 @@
     </div>
 
     <script>
+        // ═══ BACKGROUND IMAGE via File Picker ═══
+        const bgEl       = document.getElementById("bg-image");
+        const fileInput  = document.getElementById("bg-file-input");
+        const resetBtn   = document.getElementById("bg-reset-btn");
+
+        fileInput.addEventListener("change", function () {
+            const file = this.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                bgEl.style.backgroundImage = "url('" + e.target.result + "')";
+                bgEl.style.opacity = "0";
+                bgEl.classList.remove("loaded");
+                // kecil jeda agar transisi opacity berjalan
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        bgEl.classList.add("loaded");
+                    });
+                });
+                resetBtn.style.display = "flex";
+                // simpan ke sessionStorage agar tidak hilang saat ganti halaman
+                try { sessionStorage.setItem("biodataBg", e.target.result); } catch(e) {}
+            };
+            reader.readAsDataURL(file);
+            // reset input agar file yang sama bisa dipilih ulang
+            this.value = "";
+        });
+
+        function resetBackground() {
+            bgEl.classList.remove("loaded");
+            setTimeout(() => { bgEl.style.backgroundImage = "none"; }, 700);
+            resetBtn.style.display = "none";
+            try { sessionStorage.removeItem("biodataBg"); } catch(e) {}
+        }
+
+        // pulihkan background dari sessionStorage jika ada
+        (function () {
+            try {
+                const saved = sessionStorage.getItem("biodataBg");
+                if (saved) {
+                    bgEl.style.backgroundImage = "url('" + saved + "')";
+                    bgEl.classList.add("loaded");
+                    resetBtn.style.display = "flex";
+                }
+            } catch(e) {}
+        })();
+
+        // ═══ NAVIGASI ═══
         function showPage(pageId, btn) {
-            // Sembunyikan semua halaman
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => page.classList.remove('active'));
-
-            // Tampilkan halaman yang dipilih
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-
-            // Update status tombol navigasi
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // Scroll ke atas saat ganti halaman
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 
