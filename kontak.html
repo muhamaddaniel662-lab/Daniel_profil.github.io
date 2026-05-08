@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Profil — Kontak</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="nav-logo">Port<span></span>folio</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="kontak.html" class="active">Kontak</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- PAGE HEADER -->
+    <section class="section" style="padding-bottom:60px;">
+      <div class="container">
+        <div class="section-label" style="animation: fadeInDown 0.6s ease both;">Mari Terhubung</div>
+        <h1 class="text-primary shimmer-text" style="animation: fadeInUp 0.7s ease 0.1s both;">Kontak<br>Saya.</h1>
+      </div>
+    </section>
+
+    <!-- KONTAK SECTION -->
+    <section class="section section-bg-alt" style="padding-top:60px;">
+      <div class="container">
+        <div class="grid-2">
+
+          <!-- Info Kontak -->
+          <div style="animation: slideInLeft 0.8s ease both;">
+            <div class="section-label">Informasi</div>
+            <h2 class="text-primary">Hubungi <em class="text-accent">Saya</em></h2>
+            <div class="divider"></div>
+            <p>Jangan ragu untuk menghubungi saya untuk kolaborasi, proyek, atau sekadar bertegur sapa. Saya selalu terbuka untuk diskusi yang produktif.</p>
+
+            <div style="margin-top:2rem;">
+              <div class="contact-item">
+                <div class="contact-icon">📍</div>
+                <div>
+                  <p style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Lokasi</p>
+                  <p style="color:var(--text-primary); margin-bottom:0;">Bandung, Jawa Barat, Indonesia</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div>
+                  <p style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">Email</p>
+                  <p style="color:var(--text-primary); margin-bottom:0;">muhamaddaniel662@gmail.com</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">📱</div>
+                <div>
+                  <p style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">WhatsApp</p>
+                  <p style="color:var(--text-primary); margin-bottom:0;">+62 857-7391-6007</p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">🐙</div>
+                <div>
+                  <p style="color:var(--text-muted); font-size:0.75rem; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px;">GitHub</p>
+                  <p style="color:var(--text-primary); margin-bottom:0;">https://github.com/muhamaddaniel662-lab/Daniel_Alfa_Rizie.github.io</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Kontak -->
+          <div style="animation: slideInRight 0.8s ease 0.2s both;">
+            <div class="card" style="padding:40px;">
+              <h3 class="text-primary" style="margin-bottom:1.5rem;">Kirim Pesan</h3>
+
+              <div class="form-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" placeholder="Masukkan nama Anda..." />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="email@example.com" />
+              </div>
+
+              <div class="form-group">
+                <label for="subjek">Subjek</label>
+                <input type="text" id="subjek" placeholder="Subjek pesan..." />
+              </div>
+
+              <div class="form-group">
+                <label for="pesan">Pesan</label>
+                <textarea id="pesan" placeholder="Tulis pesan Anda di sini..."></textarea>
+              </div>
+
+              <button class="btn btn-primary" id="send-btn" style="width:100%;" onclick="kirimPesan()">
+                Kirim Pesan →
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SOSIAL MEDIA TABLE -->
+    <section class="section">
+      <div class="container">
+        <div class="section-label">Media Sosial</div>
+        <h2 class="text-primary animate-fade-up">Temukan Saya <em class="shimmer-text">di Platform Lain</em></h2>
+        <div class="divider"></div>
+        <div class="table-wrapper animate-fade-up" style="margin-top:2.5rem;">
+          <table>
+            <thead>
+              <tr>
+                <th>Platform</th>
+                <th>Username</th>
+                <th>Tujuan</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GitHub</td>
+                <td>@muhamaddaniel662-lab</td>
+                <td>Portfolio Kode</td>
+                <td><a href="#" class="text-accent">https://github.com/muhamaddaniel662-lab/Daniel_Alfa_Rizie.github.io</a></td>
+              </tr>
+              <tr>
+                <td>Instagram</td>
+                <td>@danielfantasywriter</td>
+                <td>Kreativitas & Kegiatan</td>
+                <td><a href="#" class="text-accent">instagram.com/danielfantasywriter/</a></td>
+              </tr>
+              <tr>
+                <td>Tiktok</td>
+                <td>@daniel_ar_01</td>
+                <td>Diskusi Teknologi</td>
+                <td><a href="#" class="text-accent">https://www.tiktok.com/@daniel_ar_01</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p style="text-align:center; margin-bottom:0.5rem;" class="text-primary font-display">Portfolio<span class="text-accent">.</span></p>
+        <p style="text-align:center; margin:0;">© 2026 — Pemrograman Web IF200103 · Universitas Halim Sanusi Bandung</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- NOTIFICATION -->
+  <div class="notification" id="notif">✓ Pesan berhasil dikirim! Terima kasih.</div>
+
+  <script>
+    // Scroll animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.animate-fade-up').forEach(el => observer.observe(el));
+
+    // Form submission
+    function kirimPesan() {
+      const nama = document.getElementById('nama').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const pesan = document.getElementById('pesan').value.trim();
+
+      if (!nama || !email || !pesan) {
+        alert('Harap lengkapi semua field yang diperlukan!');
+        return;
+      }
+
+      const btn = document.getElementById('send-btn');
+      btn.textContent = 'Mengirim...';
+      btn.disabled = true;
+      btn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        btn.textContent = 'Kirim Pesan →';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+
+        // Reset form
+        document.getElementById('nama').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('subjek').value = '';
+        document.getElementById('pesan').value = '';
+
+        // Show notification
+        const notif = document.getElementById('notif');
+        notif.classList.add('show');
+        setTimeout(() => notif.classList.remove('show'), 3500);
+      }, 1200);
+    }
+  </script>
+
+</body>
+</html>
